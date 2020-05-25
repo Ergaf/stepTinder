@@ -9,15 +9,11 @@
 
     <title>Chat</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+
     <style type="text/css">
         <#include "css/bootstrap.min.css">
         <#include "css/style.css">
     </style>
-
-    <!-- Custom styles for this template -->
-    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
@@ -31,10 +27,10 @@
                         <h6 class="ml-1 mb-0">Ketty Peris</h6>
                     </div>
                     <div class="col-md-6 options text-right pr-0">
-                        <i class="fa fa-window-minimize hide-chat-box hover text-center pt-1"></i>
-                        <p class="arrow-up mb-0">
-                            <i class="fa fa-arrow-up text-center pt-1"></i>
-                        </p>
+<#--                        <i class="fa fa-window-minimize hide-chat-box hover text-center pt-1"></i>-->
+<#--                        <p class="arrow-up mb-0">-->
+<#--                            <i class="fa fa-arrow-up text-center pt-1"></i>-->
+<#--                        </p>-->
                         <i class="fa fa-times hover text-center pt-1"></i>
                     </div>
                 </div>

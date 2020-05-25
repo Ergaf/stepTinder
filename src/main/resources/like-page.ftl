@@ -21,8 +21,9 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-lg-12 col-md-12 text-center">
-                    <img src="https://robohash.org/68.186.255.198.png" alt="" class="mx-auto rounded-circle img-fluid">
-                    <h3 class="mb-0 text-truncated">User name</h3>
+                    <img src="${profiles.photo}" alt="" class="mx-auto rounded-circle img-fluid">
+                    <h3 class="mb-0 text-truncated">${profiles.name}</h3>
+
                     <br>
                 </div>
                 <div class="col-12 col-lg-6">
@@ -46,6 +47,7 @@
         }
         let res = await createFetch("/user", "POST", data)
         console.log(res);
+        location=res;
     })
     document.querySelector(".btn-outline-success").addEventListener("click", async function () {
         let data = {
@@ -53,6 +55,7 @@
         }
         let res = await createFetch("/user", "POST", data)
         console.log(res);
+        location=res;
     })
 
     async function createFetch(adres, method, data){
@@ -64,7 +67,7 @@
             },
             body: JSON.stringify(data),
         }).catch(e => {console.log('Bad URL: ', e)});
-        let res = await response.json();
+        let res = await response.text();
         return res;
     }
 </script>
