@@ -58,11 +58,11 @@ public class RegisterServlet extends HttpServlet {
         PrintWriter out = resp.getWriter();
         if(!exist){
             DaoGetter.userDaoSql.addUser(user);
-            System.out.println("создасться новый юзер");
-            out.print("\"created\": true");
+//            ForGsonBoolean response = new ForGsonBoolean(true);
+            out.print(SoftGetter.gson.toJson(true));
         } else {
-            out.print("\"created\": false");
-            System.out.println("такой юзер уже существует");
+//            ForGsonBoolean response = new ForGsonBoolean(false);
+            out.print(SoftGetter.gson.toJson(false));
         }
         out.flush();
     }

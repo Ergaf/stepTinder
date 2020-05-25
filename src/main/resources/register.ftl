@@ -39,9 +39,14 @@
                 name: name,
                 pass: pass
             }
+            console.log(JSON.stringify(data));
             let res = await createFetch("/registration", "POST", data)
             console.log(res);
-            document.cookie = `session=lol`;
+            if(!res){
+                alert("user exist")
+            } else {
+                location="/user"
+            }
         }
     })
 
