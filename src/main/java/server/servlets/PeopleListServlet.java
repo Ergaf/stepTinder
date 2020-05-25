@@ -19,7 +19,7 @@ public class PeopleListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setCharacterEncoding("UTF-8");
-        Template template = TemplateConfig.getConfig().getTemplate("people-list.ftl");
+        Template template = TemplateConfig.getConfig().getTemplate("liked.ftl");
         Map<String, Object> templateData = new HashMap<>();
         List<User> profiles = DaoGetter.userDaoSql.readAllUsers();
 

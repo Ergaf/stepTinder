@@ -25,7 +25,7 @@
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        <a href="/registration" class="btn btn-lg btn-light btn-block" type="submit">Register(coming soon)</a>
+        <a href="/registration" class="btn btn-lg btn-light btn-block" type="submit">Register</a>
         <p class="mt-5 mb-3 text-muted">&copy; ПсевдоТиндер 2020</p>
     </form>
 
@@ -34,12 +34,16 @@
 
         document.querySelector(".btn-primary").addEventListener("click", async function () {
             let name = document.querySelector("#inputEmail").value
-            let data = {
-                name: name
+            let pass = document.querySelector("#inputPassword").value
+            if(name && pass){
+                let data = {
+                    name: name,
+                    pass: pass
+                }
+                let res = await createFetch("/user", "POST", data)
+                console.log(res);
+                document.cookie = `session=lol`;
             }
-            let res = await createFetch("/user", "POST", data)
-            console.log(res);
-            document.cookie = `session=lol`;
         })
 
         async function createFetch(adres, method, data){

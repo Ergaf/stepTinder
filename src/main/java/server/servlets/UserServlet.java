@@ -23,13 +23,13 @@ public class UserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println(profileNumber);
         resp.setCharacterEncoding("UTF-8");
-        Template template = TemplateConfig.getConfig().getTemplate("like-page.ftl");
+        Template template = TemplateConfig.getConfig().getTemplate("users.ftl");
         Map<String, Object> templateData = new HashMap<>();
         List<User> profiles = DaoGetter.userDaoSql.readAllUsers();
 
 
 
-        templateData.put("profiles", profiles);
+        templateData.put("profiles", profiles.get(profileNumber));
 
         try(Writer out = resp.getWriter()){
             template.process(templateData, out);
@@ -50,7 +50,7 @@ public class UserServlet extends HttpServlet {
 //        Stringify name = gson.fromJson(reqData, Stringify.class);
 //        ThisBaseSaver.thisBaseName = name.getStr();
         PrintWriter out = resp.getWriter();
-        List<Profile> profiles = DaoGetter.profileDao.getAll();
+        List<User> profiles = DaoGetter.userDaoSql.readAllUsers();
 
         if(profileNumber >= profiles.size()-1){
             out.print("/liked");

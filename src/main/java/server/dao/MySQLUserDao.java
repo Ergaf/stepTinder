@@ -18,8 +18,9 @@ public class MySQLUserDao implements UserDao {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
                 String photo = rs.getString("photo");
+                String pass = rs.getString("pass");
 
-                User user = new User(id, name, photo);
+                User user = new User(id, name, pass, photo);
                 users.add(user);
             }
             return users;
@@ -38,7 +39,8 @@ public class MySQLUserDao implements UserDao {
             int id = rs.getInt("id");
             String name = rs.getString("name");
             String photo = rs.getString("photo");
-            User user = new User(id, name, photo);
+            String pass = rs.getString("pass");
+            User user = new User(id, name, pass, photo);
             return user;
         } catch (Exception ex){
             throw new RuntimeException(ex);
@@ -48,10 +50,11 @@ public class MySQLUserDao implements UserDao {
     @Override
     public void addUser(User user) {
         try(Connection con = getConnection()){
-            String sql = "INSERT INTO tinder_step.users (name, photo) VALUES(?, ?)";
+            String sql = "INSERT INTO tinder_step.users (name, pass, photo) VALUES(?, ?, ?)";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, user.getName());
-            ps.setString(2, user.getPhoto());
+            ps.setString(2, user.getPass());
+            ps.setString(3, user.getPhoto());
             ps.execute();
         } catch (Exception ex){
             throw new RuntimeException(ex);
@@ -72,6 +75,16 @@ public class MySQLUserDao implements UserDao {
         } catch (Exception ex){
             throw new RuntimeException(ex);
         }
+    }
+
+    @Override
+    public List<Integer> readAllLike(User user) {
+        return null;
+    }
+
+    @Override
+    public void userLike(User user) {
+
     }
 
     private Connection getConnection() throws SQLException {

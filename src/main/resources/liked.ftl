@@ -20,6 +20,10 @@
     <div class="row">
         <div class="col-8 offset-2">
             <div class="panel panel-default user_panel">
+                <div class="navigate-cont">
+                    <a class="btn btn-lg btn-light" href="/user">Users</a>
+                    <a class="btn btn-lg btn-light" style="float: right" href="/liked">Liked</a>
+                </div>
                 <div class="panel-heading">
                     <h3 class="panel-title">Liked List</h3>
                 </div>

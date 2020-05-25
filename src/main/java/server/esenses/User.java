@@ -3,22 +3,19 @@ package server.esenses;
 public class User {
     int id;
     String name;
+    String pass;
     String photo;
 
-    public User(int id, String name) {
+    public User(int id, String name, String pass, String photo) {
         this.id = id;
         this.name = name;
-    }
-
-    public User(int id, String name, String photo) {
-        this.id = id;
-        this.name = name;
+        this.pass = pass;
         this.photo = photo;
     }
 
-    public User(String name, String photo) {
+    public User(String name, String pass) {
         this.name = name;
-        this.photo = photo;
+        this.pass = pass;
     }
 
     public int getId() {
@@ -37,20 +34,20 @@ public class User {
         this.name = name;
     }
 
+    public String getPass() {
+        return pass;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
     public String getPhoto() {
         return photo;
     }
 
     public void setPhoto(String photo) {
         this.photo = photo;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
     }
 }
 

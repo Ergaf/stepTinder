@@ -17,6 +17,10 @@
 <body style="background-color: #f5f5f5;">
 
 <div class="col-4 offset-4">
+    <div class="navigate-cont">
+        <a class="btn btn-lg btn-light" href="/user">Users</a>
+        <a class="btn btn-lg btn-light" style="float: right" href="/liked">Liked</a>
+    </div>
     <div class="card">
         <div class="card-body">
             <div class="row">

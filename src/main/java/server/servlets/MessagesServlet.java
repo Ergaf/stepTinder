@@ -16,7 +16,7 @@ public class MessagesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setCharacterEncoding("UTF-8");
-        Template template = TemplateConfig.getConfig().getTemplate("chat.ftl");
+        Template template = TemplateConfig.getConfig().getTemplate("messages.ftl");
         Map<String, Object> templateData = new HashMap<>();
 
 //        List<String> databases = dao.readAll();
