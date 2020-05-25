@@ -5,6 +5,7 @@ import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletHandler;
+import server.filters.UserNoRegisterFilter;
 import server.servlets.*;
 
 public class ServerConfig {
@@ -27,8 +28,9 @@ public class ServerConfig {
         servletHandler.addServletWithMapping(MessagesServlet.class, "/messages");
 
 
-//        servletHandler.addFilterWithMapping(CORSFilter.class, "/createNewDatabase", 1);
-//        servletHandler.addFilterWithMapping(CORSFilter.class, "/", 1);
+        servletHandler.addFilterWithMapping(UserNoRegisterFilter.class, "/user", 1);
+        servletHandler.addFilterWithMapping(UserNoRegisterFilter.class, "/liked", 1);
+        servletHandler.addFilterWithMapping(UserNoRegisterFilter.class, "/messages", 1);
 
         server.start();
     }

@@ -8,10 +8,13 @@
     <link rel="icon" href="img/favicon.ico">
 
     <title>People list</title>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-    <style type="text/css">
+<#--    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">-->
+    <style>
         <#include "css/bootstrap.min.css">
-        <#include "css/style.css">
+<#--        <#include "css/style.css">-->
+        .img-circle{
+            height: 50px;
+        }
     </style>
 </head>
 <body>
@@ -27,16 +30,15 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">Liked List</h3>
                 </div>
-                <div class="panel-body">
+                <#list profile as value>
+                <a href="/messages" class="panel-body">
                     <div class="table-container">
                         <table class="table-users table" border="0">
                             <tbody>
-                            <#list profile as value>
                                 <tr>
                                     <td width="10">
                                         <div class="avatar-img">
-<#--                                            <img class="img-circle" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxhcCYW4QDWMOjOuUTxOd50KcJvK-rop9qE9zRltSbVS_bO-cfWA" />  -->
-                                            <img class="img-circle" src=${value.photo} />  
+                                            <img class="img-circle" src=${value.photo}  />  
 
 
                                         </div>
@@ -45,18 +47,12 @@
                                     <td class="align-middle">
                                         ${value.name}
                                     </td>
-                                    <td class="align-middle">
-
-                                    </td>
-                                    <td  class="align-middle">
-                                        Last Login:  online<br><small class="text-muted">0 days ago</small>
-                                    </td>
                                 </tr>
-                            </#list>
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </a>
+                </#list>
             </div>
         </div>
     </div>

@@ -2,7 +2,10 @@ package server.servlets;
 
 import freemarker.template.Template;
 import server.DaoGetter;
+import server.SoftGetter;
 import server.TemplateConfig;
+import server.esenses.LikedIdBoolean;
+import server.esenses.Session;
 import server.esenses.User;
 import server.login.SessionDao;
 
@@ -20,18 +23,19 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class UserServlet extends HttpServlet {
-    int profileNumber = 0;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //проверка на наличие синхронизированной сессии
-        String logUser = null;
+        User userNotLiked = null;
         Cookie[] cookies = req.getCookies();
         if(cookies != null){
             for(int i = 0; i < cookies.length; i++){
                 if(cookies[i].getName().equals("sessionId")){
                     for(int o = 0; o < SessionDao.activeHash.size(); o++){
                         if(SessionDao.activeHash.get(0).getSessionId().equals(cookies[i].getValue())){
-                            logUser = SessionDao.activeHash.get(0).getUser();
+                            System.out.println("зашел user: "+SessionDao.activeHash.get(0).getUser());
+                            userNotLiked = DaoGetter.userLikeDao.readAllNotLikeThisUser(SessionDao.activeHash.get(0).getUserId());
+
+                            System.out.println(userNotLiked.getName());
                         }
                     }
                 }
@@ -39,13 +43,13 @@ public class UserServlet extends HttpServlet {
         }
 
 
-        System.out.println(profileNumber);
+
         resp.setCharacterEncoding("UTF-8");
         Template template = TemplateConfig.getConfig().getTemplate("users.ftl");
         Map<String, Object> templateData = new HashMap<>();
-        List<User> profiles = DaoGetter.userDaoSql.readAllUsers();
 
-        templateData.put("profiles", profiles.get(profileNumber));
+
+        templateData.put("profiles", userNotLiked);
 
         try(Writer out = resp.getWriter()){
             template.process(templateData, out);
@@ -56,6 +60,25 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Session user = null;
+        Cookie[] cookies = req.getCookies();
+        if(cookies != null){
+            for(int i = 0; i < cookies.length; i++){
+                if(cookies[i].getName().equals("sessionId")){
+                    for(int o = 0; o < SessionDao.activeHash.size(); o++){
+                        if(SessionDao.activeHash.get(0).getSessionId().equals(cookies[i].getValue())){
+                            System.out.println("лайкнул user: "+SessionDao.activeHash.get(0).getUser()
+                            +" с айдишкой: "+SessionDao.activeHash.get(0).getUserId());
+                            user = SessionDao.activeHash.get(0);
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
 
@@ -63,17 +86,24 @@ public class UserServlet extends HttpServlet {
                 .lines()
                 .collect(Collectors.joining());
         System.out.println("пришел json: "+reqData);
+        LikedIdBoolean liked = SoftGetter.gson.fromJson(reqData, LikedIdBoolean.class);
+        if(liked.getStr()){
+            assert user != null;
+            DaoGetter.userLikeDao.userAddLike(user.getUserId(), liked.getId());
+        }
+
+
+
         PrintWriter out = resp.getWriter();
-        List<User> profiles = DaoGetter.userDaoSql.readAllUsers();
 
         //проверка на то каких юзеров лайкнули
-        if(profileNumber >= profiles.size()-1){
-            out.print("/liked");
-            profileNumber = 0;
-        } else {
-            out.print("/user");
-            profileNumber++;
-        }
+//        if(profileNumber >= profiles.size()-1){
+//            out.print("/liked");
+//            profileNumber = 0;
+//        } else {
+//            out.print("/user");
+//            profileNumber++;
+//        }
         out.flush();
         //---------------------
     }

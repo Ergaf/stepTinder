@@ -26,7 +26,7 @@
             <div class="row">
                 <div class="col-12 col-lg-12 col-md-12 text-center">
                     <img src="${profiles.photo}" alt="" class="mx-auto rounded-circle img-fluid">
-                    <h3 class="mb-0 text-truncated">${profiles.name}</h3>
+                    <h3 id="${profiles.id}" class="mb-0 text-truncated">${profiles.name}</h3>
 
                     <br>
                 </div>
@@ -45,8 +45,10 @@
 </div>
 
 <script>
+    let id = document.querySelector("h3").getAttribute("id")
     document.querySelector(".btn-outline-danger").addEventListener("click", async function () {
         let data = {
+            id: id,
             str: false
         }
         let res = await createFetch("/user", "POST", data)
@@ -55,6 +57,7 @@
     })
     document.querySelector(".btn-outline-success").addEventListener("click", async function () {
         let data = {
+            id: id,
             str: true
         }
         let res = await createFetch("/user", "POST", data)

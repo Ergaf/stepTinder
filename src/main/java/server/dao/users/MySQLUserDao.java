@@ -1,10 +1,12 @@
-package server.dao;
+package server.dao.users;
 
 import server.esenses.User;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static server.dao.SqlConnection.getConnection;
 
 public class MySQLUserDao implements UserDao {
     @Override
@@ -51,6 +53,27 @@ public class MySQLUserDao implements UserDao {
     }
 
     @Override
+    public User readUserForId(int userId) {
+        try(Connection con = getConnection()){
+            User user = new User("\n", "\n");
+            String sql = "SELECT * FROM tinder_step.users WHERE id=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setObject(1, userId);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String photo = rs.getString("photo");
+                String pass = rs.getString("pass");
+                user = new User(id, name, pass, photo);
+            }
+            return user;
+        } catch (Exception ex){
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
     public void addUser(User user) {
         try(Connection con = getConnection()){
             String sql = "INSERT INTO tinder_step.users (name, pass, photo) VALUES(?, ?, ?)";
@@ -65,7 +88,7 @@ public class MySQLUserDao implements UserDao {
     }
 
     @Override
-    public void deleteUserForId(int id) {
+    public void deleteUserForName(String userName) {
 
     }
 
@@ -78,20 +101,5 @@ public class MySQLUserDao implements UserDao {
         } catch (Exception ex){
             throw new RuntimeException(ex);
         }
-    }
-
-    @Override
-    public List<Integer> readAllLike(User user) {
-        return null;
-    }
-
-    @Override
-    public void userLike(User user) {
-
-    }
-
-    private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/?useSSL=false", "root", "12346");
-//        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/?useSSL=false", "postgres", "12346");
     }
 }

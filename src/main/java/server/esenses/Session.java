@@ -2,10 +2,17 @@ package server.esenses;
 
 public class Session {
     String user;
+    int userId;
     String sessionId;
 
     public Session(String user, String sessionId) {
         this.user = user;
+        this.sessionId = sessionId;
+    }
+
+    public Session(String user, int userId, String sessionId) {
+        this.user = user;
+        this.userId = userId;
         this.sessionId = sessionId;
     }
 
@@ -23,5 +30,13 @@ public class Session {
 
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

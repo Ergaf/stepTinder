@@ -25,18 +25,18 @@ import java.util.stream.Collectors;
 public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Cookie[] cookies = req.getCookies();
-        if(cookies != null){
-            for(int i = 0; i < cookies.length; i++){
-                if(cookies[i].getName().equals("sessionId")){
-                    for(int o = 0; o < SessionDao.activeHash.size(); o++){
-                        if(SessionDao.activeHash.get(0).getSessionId().equals(cookies[i].getValue())){
-
-                        }
-                    }
-                }
-            }
-        }
+//        Cookie[] cookies = req.getCookies();
+//        if(cookies != null){
+//            for(int i = 0; i < cookies.length; i++){
+//                if(cookies[i].getName().equals("sessionId")){
+//                    for(int o = 0; o < SessionDao.activeHash.size(); o++){
+//                        if(SessionDao.activeHash.get(0).getSessionId().equals(cookies[i].getValue())){
+//
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
 
         resp.setCharacterEncoding("UTF-8");
@@ -69,7 +69,7 @@ public class LoginServlet extends HttpServlet {
         PrintWriter out = resp.getWriter();
         if(user.getName().equals(testForNameAndPass.getName()) & user.getPass().equals(testForNameAndPass.getPass())){
             System.out.println("зашли под логином");
-            Session session = new Session(user.getName(), SessionGen.createSessionId(user.getName()));
+            Session session = new Session(testForNameAndPass.getName(), testForNameAndPass.getId(), SessionGen.createSessionId(user.getName()));
             SessionDao.activeHash.add(session);
             out.print(SoftGetter.gson.toJson(session));
         } else {

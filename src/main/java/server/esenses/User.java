@@ -20,6 +20,10 @@ public class User {
         this.pass = pass;
     }
 
+    public User(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }
