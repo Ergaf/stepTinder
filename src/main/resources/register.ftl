@@ -32,7 +32,7 @@
 
     document.querySelector(".btn-primary").addEventListener("click", async function () {
         event.preventDefault()
-        let name = document.querySelector("#inputEmail").value
+        let name = document.querySelector("#inputEmail").value.toLowerCase();
         let pass = document.querySelector("#inputPassword").value
         if(name && pass){
             let data = {

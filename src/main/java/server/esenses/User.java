@@ -1,5 +1,7 @@
 package server.esenses;
 
+import java.util.Objects;
+
 public class User {
     int id;
     String name;

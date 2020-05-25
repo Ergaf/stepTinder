@@ -4,8 +4,10 @@ import freemarker.template.Template;
 import server.DaoGetter;
 import server.TemplateConfig;
 import server.esenses.User;
+import server.login.SessionDao;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,13 +23,27 @@ public class UserServlet extends HttpServlet {
     int profileNumber = 0;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //проверка на наличие синхронизированной сессии
+        String logUser = null;
+        Cookie[] cookies = req.getCookies();
+        if(cookies != null){
+            for(int i = 0; i < cookies.length; i++){
+                if(cookies[i].getName().equals("sessionId")){
+                    for(int o = 0; o < SessionDao.activeHash.size(); o++){
+                        if(SessionDao.activeHash.get(0).getSessionId().equals(cookies[i].getValue())){
+                            logUser = SessionDao.activeHash.get(0).getUser();
+                        }
+                    }
+                }
+            }
+        }
+
+
         System.out.println(profileNumber);
         resp.setCharacterEncoding("UTF-8");
         Template template = TemplateConfig.getConfig().getTemplate("users.ftl");
         Map<String, Object> templateData = new HashMap<>();
         List<User> profiles = DaoGetter.userDaoSql.readAllUsers();
-
-
 
         templateData.put("profiles", profiles.get(profileNumber));
 
@@ -47,11 +63,10 @@ public class UserServlet extends HttpServlet {
                 .lines()
                 .collect(Collectors.joining());
         System.out.println("пришел json: "+reqData);
-//        Stringify name = gson.fromJson(reqData, Stringify.class);
-//        ThisBaseSaver.thisBaseName = name.getStr();
         PrintWriter out = resp.getWriter();
         List<User> profiles = DaoGetter.userDaoSql.readAllUsers();
 
+        //проверка на то каких юзеров лайкнули
         if(profileNumber >= profiles.size()-1){
             out.print("/liked");
             profileNumber = 0;
@@ -59,9 +74,8 @@ public class UserServlet extends HttpServlet {
             out.print("/user");
             profileNumber++;
         }
-
-//        out.print(reqData);
         out.flush();
+        //---------------------
     }
 
     @Override

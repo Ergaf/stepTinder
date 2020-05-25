@@ -24,7 +24,7 @@
         <input type="text" id="inputEmail" class="form-control" placeholder="Login" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <button class="btn btn-lg btn-primary btn-block" id="sign" type="submit">Sign in</button>
         <a href="/registration" class="btn btn-lg btn-light btn-block" type="submit">Register</a>
         <p class="mt-5 mb-3 text-muted">&copy; ПсевдоТиндер 2020</p>
     </form>
@@ -32,17 +32,24 @@
     <script>
         console.log(document.cookie);
 
-        document.querySelector(".btn-primary").addEventListener("click", async function () {
-            let name = document.querySelector("#inputEmail").value
+        document.querySelector("#sign").addEventListener("click", async function () {
+            event.preventDefault();
+            let name = document.querySelector("#inputEmail").value.toLowerCase();
             let pass = document.querySelector("#inputPassword").value
             if(name && pass){
                 let data = {
                     name: name,
                     pass: pass
                 }
-                let res = await createFetch("/user", "POST", data)
+                let res = await createFetch("/login", "POST", data)
                 console.log(res);
-                document.cookie = `session=lol`;
+                if(res.user === name){
+                    document.cookie = `sessionId=`+res.sessionId;
+
+                    location="/user"
+                } else {
+                    alert("incorrect user or pass")
+                }
             }
         })
 
@@ -55,7 +62,7 @@
                 },
                 body: JSON.stringify(data),
             }).catch(e => {console.log('Bad URL: ', e)});
-            let res = await response.text();
+            let res = await response.json();
             return res;
         }
     </script>

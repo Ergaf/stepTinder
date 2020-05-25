@@ -44,36 +44,21 @@ public class RegisterServlet extends HttpServlet {
                 .lines()
                 .collect(Collectors.joining());
         System.out.println("пришел json: "+reqData);
-        User user = SoftGetter.gson.fromJson(reqData, User.class);
+        User user = SoftGetter.gson.fromJson(reqData.toLowerCase(), User.class);
         user.setPhoto("https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png");
 
-        List<User> testForName = DaoGetter.userDaoSql.readAllUsers();
-        boolean exist = false;
-        for(int i = 0; i < testForName.size(); i++){
-            if(testForName.get(i).getName().equals(user.getName())){
-                exist = true;
-            }
-        }
 
+        //проверка на наличие такого имени в базе юзеров(мог быть емеил мб)
+        System.out.println(user.getName());
+        User testForName = DaoGetter.userDaoSql.readUserForName(user.getName());
         PrintWriter out = resp.getWriter();
-        if(!exist){
-            DaoGetter.userDaoSql.addUser(user);
-//            ForGsonBoolean response = new ForGsonBoolean(true);
+
+        if(testForName.getName().equals("\n")){
+          DaoGetter.userDaoSql.addUser(user);
             out.print(SoftGetter.gson.toJson(true));
         } else {
-//            ForGsonBoolean response = new ForGsonBoolean(false);
             out.print(SoftGetter.gson.toJson(false));
         }
         out.flush();
-    }
-
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPut(req, resp);
-    }
-
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doDelete(req, resp);
     }
 }

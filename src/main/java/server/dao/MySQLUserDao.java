@@ -30,17 +30,20 @@ public class MySQLUserDao implements UserDao {
     }
 
     @Override
-    public User readUserForId(int userId) {
+    public User readUserForName(String userName) {
         try(Connection con = getConnection()){
-            String sql = "SELECT * FROM tinder_step.users WHERE id=?";
+            User user = new User("\n", "\n");
+            String sql = "SELECT * FROM tinder_step.users WHERE name=?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setObject(1, userId);
+            ps.setObject(1, userName);
             ResultSet rs = ps.executeQuery();
-            int id = rs.getInt("id");
-            String name = rs.getString("name");
-            String photo = rs.getString("photo");
-            String pass = rs.getString("pass");
-            User user = new User(id, name, pass, photo);
+            while(rs.next()){
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String photo = rs.getString("photo");
+                String pass = rs.getString("pass");
+                user = new User(id, name, pass, photo);
+            }
             return user;
         } catch (Exception ex){
             throw new RuntimeException(ex);

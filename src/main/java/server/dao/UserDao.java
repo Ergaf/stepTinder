@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserDao {
     List<User> readAllUsers();
-    User readUserForId(int id);
+    User readUserForName(String userName);
     void addUser(User user);
     void deleteUserForId(int id);
     void clearBase();
