@@ -40,7 +40,8 @@ public class MySqlUserLikeDao implements LikeDao{
     public User readAllNotLikeThisUser(int userId) {
         try(Connection con = getConnection()){
             Random random = new Random();
-            List<User> likedUsers = new ArrayList<>();
+//            List<User> likedUsers = new ArrayList<>();
+            List<User> likedUsers = DaoGetter.userDaoSql.readAllUsers();
 
             String sql = "SELECT tinder_step.users.id, tinder_step.users.name, tinder_step.users.pass, tinder_step.users.photo FROM tinder_step.users JOIN tinder_step.liked_for_users ON tinder_step.users.id=tinder_step.liked_for_users.likedid WHERE wholikeid!=?";
             PreparedStatement ps = con.prepareStatement(sql);
@@ -53,7 +54,7 @@ public class MySqlUserLikeDao implements LikeDao{
                 String photo = rs.getString("photo");
 
                 User LikedUser = new User(id, name, pass, photo);
-                likedUsers.add(LikedUser);
+//                likedUsers.add(LikedUser);
             }
 
             int randomUser = random.nextInt(likedUsers.size());
