@@ -32,6 +32,29 @@ public class MySQLUserDao implements UserDao {
     }
 
     @Override
+    public List<User> readAllUsersExceptThisUser(int userId) {
+        List<User> users = new ArrayList<>();
+        try(Connection con = getConnection()){
+            String sql = "SELECT * FROM tinder_step.users WHERE tinder_step.users.id!=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setObject(1, userId);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String photo = rs.getString("photo");
+                String pass = rs.getString("pass");
+
+                User user = new User(id, name, pass, photo);
+                users.add(user);
+            }
+            return users;
+        } catch (Exception ex){
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
     public User readUserForName(String userName) {
         try(Connection con = getConnection()){
             User user = new User("\n", "\n");

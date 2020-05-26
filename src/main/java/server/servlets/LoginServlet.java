@@ -69,7 +69,7 @@ public class LoginServlet extends HttpServlet {
         PrintWriter out = resp.getWriter();
         if(user.getName().equals(testForNameAndPass.getName()) & user.getPass().equals(testForNameAndPass.getPass())){
             System.out.println("зашли под логином");
-            Session session = new Session(testForNameAndPass.getName(), testForNameAndPass.getId(), SessionGen.createSessionId(user.getName()));
+            Session session = new Session(testForNameAndPass.getName(), testForNameAndPass.getId(), SessionGen.createSessionId(user.getName()), DaoGetter.userDaoSql.readAllUsersExceptThisUser(testForNameAndPass.getId()));
             SessionDao.activeHash.add(session);
             out.print(SoftGetter.gson.toJson(session));
         } else {

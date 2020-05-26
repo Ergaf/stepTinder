@@ -7,6 +7,6 @@ import java.util.List;
 public interface LikeDao {
     List<User> readAllLikeThisUser(int userId);
     User readAllNotLikeThisUser(int userId);
-    boolean LikeThisForThisUser();
+    boolean LikeThisForThisUser(int userId, int likedId);
     void userAddLike(int userId, int likedId);
 }
