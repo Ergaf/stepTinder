@@ -24,7 +24,7 @@ public class ServerConfig {
         servletHandler.addServletWithMapping(UserServlet.class, "/user");
         servletHandler.addServletWithMapping(LoginServlet.class, "/login");
         servletHandler.addServletWithMapping(RegisterServlet.class, "/registration");
-        servletHandler.addServletWithMapping(PeopleListServlet.class, "/liked");
+        servletHandler.addServletWithMapping(LikedServlet.class, "/liked");
         servletHandler.addServletWithMapping(MessagesServlet.class, "/messages");
 
 

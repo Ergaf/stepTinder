@@ -1,4 +1,4 @@
-package server.esenses;
+package server.esenses.forGson;
 
 public class LikedIdBoolean {
     int id;

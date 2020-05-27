@@ -2,8 +2,11 @@ package server.servlets;
 
 import freemarker.template.Template;
 import server.DaoGetter;
+import server.SoftGetter;
 import server.TemplateConfig;
+import server.esenses.Session;
 import server.esenses.User;
+import server.esenses.forGson.IntegerJson;
 import server.login.SessionDao;
 
 import javax.servlet.ServletException;
@@ -12,12 +15,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-public class PeopleListServlet extends HttpServlet {
+public class LikedServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<User> likedUsers = null;
@@ -26,9 +31,9 @@ public class PeopleListServlet extends HttpServlet {
             for(int i = 0; i < cookies.length; i++){
                 if(cookies[i].getName().equals("sessionId")){
                     for(int o = 0; o < SessionDao.activeHash.size(); o++){
-                        if(SessionDao.activeHash.get(0).getSessionId().equals(cookies[i].getValue())){
-                            System.out.println("зашел user: "+SessionDao.activeHash.get(0).getUser());
-                            likedUsers = DaoGetter.userLikeDao.readAllLikeThisUser(SessionDao.activeHash.get(0).getUserId());
+                        if(SessionDao.activeHash.get(o).getSessionId().equals(cookies[i].getValue())){
+                            System.out.println("зашел user: "+SessionDao.activeHash.get(o).getUser());
+                            likedUsers = DaoGetter.userLikeDao.readAllLikeThisUser(SessionDao.activeHash.get(o).getUserId());
                         }
                     }
                 }
@@ -52,7 +57,32 @@ public class PeopleListServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        Cookie[] cookies = req.getCookies();
+        if(cookies != null){
+            for(int i = 0; i < cookies.length; i++){
+                if(cookies[i].getName().equals("sessionId")){
+                    for(int o = 0; o < SessionDao.activeHash.size(); o++){
+                        if(SessionDao.activeHash.get(o).getSessionId().equals(cookies[i].getValue())){
+                            System.out.println("чат с юзером хочет user: "+SessionDao.activeHash.get(o).getUser());
+
+                            resp.setCharacterEncoding("UTF-8");
+                            resp.setContentType("application/json");
+
+                            String reqData = req.getReader()
+                                    .lines()
+                                    .collect(Collectors.joining());
+                            System.out.println("пришел json: "+reqData);
+                            IntegerJson userId = SoftGetter.gson.fromJson(reqData, IntegerJson.class);
+                            SessionDao.activeHash.get(o).setChatUserId(userId.getId());
+
+                            PrintWriter out = resp.getWriter();
+                            out.print(SoftGetter.gson.toJson(true));
+                            out.flush();
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override

@@ -31,7 +31,7 @@
                     <h3 class="panel-title">Liked List</h3>
                 </div>
                 <#list profile as value>
-                <a href="/messages" class="panel-body">
+                <div href="/messages" id="${value.id}" class="panel-body">
                     <div class="table-container">
                         <table class="table-users table" border="0">
                             <tbody>
@@ -51,12 +51,44 @@
                             </tbody>
                         </table>
                     </div>
-                </a>
+                </div>
                 </#list>
             </div>
         </div>
     </div>
 </div>
 
+
+<script>
+    console.log("lol");
+    document.querySelectorAll(".panel-body").forEach(function (e) {
+        e.addEventListener("click", async function () {
+            let data = {
+                id: e.id
+            }
+            let res = await createFetch("/liked", "POST", data)
+            console.log(res);
+            if(!res){
+                alert("фигня какая то)")
+            } else {
+                location="/messages"
+            }
+        })
+    })
+
+    async function createFetch(adres, method, data){
+        const response = await fetch(adres, {
+            method: method,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        }).catch(e => {console.log('Bad URL: ', e)});
+        let res = await response.json();
+        return res;
+    }
+
+</script>
 </body>
 </html>

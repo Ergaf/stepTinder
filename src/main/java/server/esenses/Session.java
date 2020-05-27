@@ -8,6 +8,7 @@ public class Session {
     String sessionId;
     List<User> users;
     int likeNumber;
+    int chatUserId;
 
     public Session(String user, String sessionId) {
         this.user = user;
@@ -67,5 +68,13 @@ public class Session {
 
     public void setLikeNumber(int likeNumber) {
         this.likeNumber = likeNumber;
+    }
+
+    public int getChatUserId() {
+        return chatUserId;
+    }
+
+    public void setChatUserId(int chatUserId) {
+        this.chatUserId = chatUserId;
     }
 }

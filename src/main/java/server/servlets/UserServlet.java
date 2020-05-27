@@ -4,7 +4,7 @@ import freemarker.template.Template;
 import server.DaoGetter;
 import server.SoftGetter;
 import server.TemplateConfig;
-import server.esenses.LikedIdBoolean;
+import server.esenses.forGson.LikedIdBoolean;
 import server.esenses.Session;
 import server.esenses.User;
 import server.login.SessionDao;
@@ -65,10 +65,10 @@ public class UserServlet extends HttpServlet {
             for(int i = 0; i < cookies.length; i++){
                 if(cookies[i].getName().equals("sessionId")){
                     for(int o = 0; o < SessionDao.activeHash.size(); o++){
-                        if(SessionDao.activeHash.get(0).getSessionId().equals(cookies[i].getValue())){
+                        if(SessionDao.activeHash.get(o).getSessionId().equals(cookies[i].getValue())){
 //                            System.out.println("лайкнул user: "+SessionDao.activeHash.get(0).getUser()
 //                            +" с айдишкой: "+SessionDao.activeHash.get(0).getUserId());
-                            user = SessionDao.activeHash.get(0);
+                            user = SessionDao.activeHash.get(o);
                         }
                     }
                 }
