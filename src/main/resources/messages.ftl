@@ -22,13 +22,13 @@
         <div class="chat-main col-6 offset-3">
             <div class="col-md-12 chat-header">
                 <div class="navigate-cont">
-                    <a class="btn btn-lg btn-light" href="/user">Users</a>
+                    <a class="btn btn-lg btn-light" href="/user">UsersForLike</a>
                     <a class="btn btn-lg btn-light" style="float: right" href="/liked">Liked</a>
                 </div>
                 <div class="row header-one text-white p-1">
                     <div class="col-md-6 name pl-2">
                         <i class="fa fa-comment"></i>
-                        <h6 class="ml-1 mb-0">Ketty Peris</h6>
+                        <h6 class="ml-1 mb-0">${chatToUser.name}</h6>
                     </div>
                     <div class="col-md-6 options text-right pr-0">
                         <i class="fa fa-times hover text-center pt-1"></i>
@@ -45,8 +45,8 @@
                 </div>
             </div>
             <div class="chat-content">
-                <div class="col-md-12 chats pt-3 pl-2 pr-3 pb-3">
-                    <ul class="p-0">
+                <div class="col-md-12 chats pt-3 pl-2 pr-3 pb-3" style="height: 75vh">
+                    <ul class="p-0" id="msgCont">
                         <#list message as message>
                             <#if message.msgForThisUser == true>
                             <li class="send-msg float-right mb-2">
@@ -100,8 +100,20 @@
             console.log(res);
             if(res){
                 console.log("сообщение дошло!");
+
+                let newMsg = document.createElement("li")
+                newMsg.classList.add("send-msg")
+                newMsg.classList.add("float-right")
+                newMsg.classList.add("mb-2")
+                newMsg.innerHTML = "<p class=\"pt-1 pb-1 pl-2 pr-2 m-0 rounded\">\n"+value+
+                    "</p>\n"+
+                    "<span class=\"receive-msg-time\">now</span>"
+
+                document.querySelector("#msgCont").appendChild(newMsg);
+                document.querySelector("#messageinput").value = ""
             } else {
                 console.log("фигня какая то)");
+                document.querySelector("#messageinput").value = ""
             }
         }
 

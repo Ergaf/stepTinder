@@ -70,4 +70,16 @@ public class Message {
     public void setMsgForThisUser(boolean msgForThisUser) {
         this.msgForThisUser = msgForThisUser;
     }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "id=" + id +
+                ", userid=" + userid +
+                ", touserid=" + touserid +
+                ", text='" + text + '\'' +
+                ", time='" + time + '\'' +
+                ", msgForThisUser=" + msgForThisUser +
+                '}';
+    }
 }

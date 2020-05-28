@@ -11,7 +11,7 @@
 <#--    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">-->
     <style>
         <#include "css/bootstrap.min.css">
-<#--        <#include "css/style.css">-->
+        <#include "css/style.css">
         .img-circle{
             height: 50px;
         }
@@ -24,14 +24,15 @@
         <div class="col-8 offset-2">
             <div class="panel panel-default user_panel">
                 <div class="navigate-cont">
-                    <a class="btn btn-lg btn-light" href="/user">Users</a>
+                    <a class="btn btn-lg btn-light" href="/user">UsersForLike</a>
                     <a class="btn btn-lg btn-light" style="float: right" href="/liked">Liked</a>
                 </div>
                 <div class="panel-heading">
                     <h3 class="panel-title">Liked List</h3>
                 </div>
-                <#list profile as value>
-                <div href="/messages" id="${value.id}" class="panel-body">
+                <div  style="height: 75vh">
+                    <#list profile as value>
+                    <div href="/messages" id="${value.id}" class="panel-body">
                     <div class="table-container">
                         <table class="table-users table" border="0">
                             <tbody>
@@ -51,8 +52,9 @@
                             </tbody>
                         </table>
                     </div>
+                    </div>
+                    </#list>
                 </div>
-                </#list>
             </div>
         </div>
     </div>

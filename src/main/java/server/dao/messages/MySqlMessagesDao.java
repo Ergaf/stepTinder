@@ -1,7 +1,6 @@
 package server.dao.messages;
 
 import server.esenses.Message;
-import server.esenses.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -43,7 +42,7 @@ public class MySqlMessagesDao implements MessagesDao{
     @Override
     public boolean addMessage(Message message) {
         try(Connection con = getConnection()){
-            String sql = "INSERT INTO messages (userid, touserid, text, time) values (?, ?, ?, ?)";
+            String sql = "INSERT INTO tinder_step.messages (userid, touserid, text, time) values (?, ?, ?, ?)";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setObject(1, message.getUserid());
             ps.setObject(2, message.getTouserid());

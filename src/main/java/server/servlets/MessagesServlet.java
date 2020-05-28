@@ -14,7 +14,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Writer;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +36,9 @@ public class MessagesServlet extends HttpServlet {
                             System.out.println("в сообщения зашел user: "+SessionDao.activeHash.get(o).getUser());
                             //считывание сообщений между 2мя юзерами из базы
                             List<Message> messages = DaoGetter.userMsgDao.ReadMessageFromDialog(SessionDao.activeHash.get(o).getUserId(), SessionDao.activeHash.get(o).getChatUserId());
+                            //хз зачем опять мучать базу но все же считывание именю юзера
+                            User chatToUser = DaoGetter.userDaoSql.readUserForId(SessionDao.activeHash.get(o).getChatUserId());
+
 
                             resp.setCharacterEncoding("UTF-8");
                             Template template = TemplateConfig.getConfig().getTemplate("messages.ftl");
@@ -47,6 +53,7 @@ public class MessagesServlet extends HttpServlet {
                                 }
                             }
                             templateData.put("message", messages);
+                            templateData.put("chatToUser", chatToUser);
 
                             try(Writer out = resp.getWriter()){
                                 template.process(templateData, out);
@@ -70,8 +77,6 @@ public class MessagesServlet extends HttpServlet {
                     for(int o = 0; o < SessionDao.activeHash.size(); o++){
                         if(SessionDao.activeHash.get(o).getSessionId().equals(cookies[i].getValue())){
                             System.out.println("сообщение прислал user: "+SessionDao.activeHash.get(o).getUser());
-                            //считывание юзеров получивших лайк
-
                             resp.setCharacterEncoding("UTF-8");
                             resp.setContentType("application/json");
 
@@ -80,6 +85,23 @@ public class MessagesServlet extends HttpServlet {
                                     .collect(Collectors.joining());
                             System.out.println("пришел json: "+reqData);
                             Message message = SoftGetter.gson.fromJson(reqData, Message.class);
+                            //создания обьекта времени приходящего сообщения
+                            LocalDateTime logDateTime = new Timestamp(System.currentTimeMillis()).toLocalDateTime();
+                            String time = logDateTime.getDayOfMonth()+"/"+
+                                    logDateTime.getMonthValue()+"/"+
+                                    logDateTime.getYear()+" "+
+                                    logDateTime.getHour()+":"+
+                                    logDateTime.getMinute()+" "+
+                                    logDateTime.getSecond();
+                            //добавление нужных значений в обьект сообщения
+                            message.setTime(time);
+                            message.setTouserid(SessionDao.activeHash.get(o).getChatUserId());
+                            message.setUserid(SessionDao.activeHash.get(o).getUserId());
+                            System.out.println(message.toString());
+                            boolean msgIdAdd = DaoGetter.userMsgDao.addMessage(message);
+                            PrintWriter out = resp.getWriter();
+                            out.print(SoftGetter.gson.toJson(msgIdAdd));
+                            out.flush();
                         }
                     }
                 }

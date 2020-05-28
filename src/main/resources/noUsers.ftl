@@ -18,7 +18,7 @@
 
 <div class="col-4 offset-4">
     <div class="navigate-cont">
-        <a class="btn btn-lg btn-light" href="/user">Users</a>
+        <a class="btn btn-lg btn-light" href="/user">UsersForLike</a>
         <a class="btn btn-lg btn-light" style="float: right" href="/liked">Liked</a>
     </div>
     <div>вы просмотрели всех!</div>
