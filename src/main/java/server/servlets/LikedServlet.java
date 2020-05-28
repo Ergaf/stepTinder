@@ -32,7 +32,8 @@ public class LikedServlet extends HttpServlet {
                 if(cookies[i].getName().equals("sessionId")){
                     for(int o = 0; o < SessionDao.activeHash.size(); o++){
                         if(SessionDao.activeHash.get(o).getSessionId().equals(cookies[i].getValue())){
-                            System.out.println("зашел user: "+SessionDao.activeHash.get(o).getUser());
+                            System.out.println("в список лайкнутых зашел user: "+SessionDao.activeHash.get(o).getUser());
+                            //считывание юзеров получивших лайк
                             likedUsers = DaoGetter.userLikeDao.readAllLikeThisUser(SessionDao.activeHash.get(o).getUserId());
                         }
                     }
@@ -73,8 +74,11 @@ public class LikedServlet extends HttpServlet {
                                     .collect(Collectors.joining());
                             System.out.println("пришел json: "+reqData);
                             IntegerJson userId = SoftGetter.gson.fromJson(reqData, IntegerJson.class);
+
+                            //запись в память текущей сессии о том в какой чат стучиться данная сессия(для сервлета сообщений)
                             SessionDao.activeHash.get(o).setChatUserId(userId.getId());
 
+                            //передача клиенту о том что все ок)
                             PrintWriter out = resp.getWriter();
                             out.print(SoftGetter.gson.toJson(true));
                             out.flush();

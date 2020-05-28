@@ -25,25 +25,9 @@ import java.util.stream.Collectors;
 public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        Cookie[] cookies = req.getCookies();
-//        if(cookies != null){
-//            for(int i = 0; i < cookies.length; i++){
-//                if(cookies[i].getName().equals("sessionId")){
-//                    for(int o = 0; o < SessionDao.activeHash.size(); o++){
-//                        if(SessionDao.activeHash.get(0).getSessionId().equals(cookies[i].getValue())){
-//
-//                        }
-//                    }
-//                }
-//            }
-//        }
-
-
         resp.setCharacterEncoding("UTF-8");
         Template template = TemplateConfig.getConfig().getTemplate("login.ftl");
         Map<String, Object> templateData = new HashMap<>();
-
-        List<User> users = DaoGetter.userDaoSql.readAllUsers();
 
         try(Writer out = resp.getWriter()){
             template.process(templateData, out);
@@ -68,7 +52,7 @@ public class LoginServlet extends HttpServlet {
         //проверка на имя-пароль и создание сессии с последующей передачей ее браузеру в json
         PrintWriter out = resp.getWriter();
         if(user.getName().equals(testForNameAndPass.getName()) & user.getPass().equals(testForNameAndPass.getPass())){
-            System.out.println("зашли под логином");
+            System.out.println("залогинился "+user.getName());
             Session session = new Session(testForNameAndPass.getName(), testForNameAndPass.getId(), SessionGen.createSessionId(user.getName()), DaoGetter.userDaoSql.readAllUsersExceptThisUser(testForNameAndPass.getId()));
             SessionDao.activeHash.add(session);
             out.print(SoftGetter.gson.toJson(session));

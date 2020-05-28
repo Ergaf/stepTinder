@@ -6,6 +6,7 @@ public class Message {
     int touserid;
     String text;
     String time;
+    boolean msgForThisUser;
 
     public Message(int id, int userid, int touserid, String text, String time) {
         this.id = id;
@@ -60,5 +61,13 @@ public class Message {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public boolean isMsgForThisUser() {
+        return msgForThisUser;
+    }
+
+    public void setMsgForThisUser(boolean msgForThisUser) {
+        this.msgForThisUser = msgForThisUser;
     }
 }

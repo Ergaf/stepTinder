@@ -25,24 +25,26 @@ import java.util.stream.Collectors;
 public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //поиск к какой сессии пренадлежит данный запрос
         Cookie[] cookies = req.getCookies();
         if(cookies != null){
             for(int i = 0; i < cookies.length; i++){
                 if(cookies[i].getName().equals("sessionId")){
                     for(int o = 0; o < SessionDao.activeHash.size(); o++){
-                        if(SessionDao.activeHash.get(0).getSessionId().equals(cookies[i].getValue())){
-//                            System.out.println("зашел user: "+SessionDao.activeHash.get(0).getUser());
-
+                        if(SessionDao.activeHash.get(o).getSessionId().equals(cookies[i].getValue())){
                             resp.setCharacterEncoding("UTF-8");
                             Map<String, Object> templateData = new HashMap<>();
-                            Template template = TemplateConfig.getConfig().getTemplate("noUsers.ftl");
+                            Template template;
 
-                            if(SessionDao.activeHash.get(0).getLikeNumber() <= 0){
+                            if(SessionDao.activeHash.get(o).getLikeNumber() <= 0){
                                 template = TemplateConfig.getConfig().getTemplate("noUsers.ftl");
                             } else {
                                 template = TemplateConfig.getConfig().getTemplate("users.ftl");
-                                List<User> users = SessionDao.activeHash.get(0).getUsers();
-                                templateData.put("profiles", users.get(SessionDao.activeHash.get(0).getLikeNumber()-1));
+                                List<User> users = SessionDao.activeHash.get(o).getUsers();
+                                //считывания с базы юзеров по очереди на лайк. увы костыльно(
+                                //они просто отображаются все (новые первыми)
+                                //не нашел/не понял как выбрать только тех кого еще НЕ лайкнули и НЕ посмотрели
+                                templateData.put("profiles", users.get(SessionDao.activeHash.get(o).getLikeNumber()-1));
                             }
 
                             try(Writer out = resp.getWriter()){
@@ -89,7 +91,11 @@ public class UserServlet extends HttpServlet {
                 DaoGetter.userLikeDao.userAddLike(user.getUserId(), liked.getId());
             }
         }
+
+        //костыль ибо я не понял как выбрать из базы юзеров которых не лайкнул текущий юзер =(
         user.setLikeNumber(user.getLikeNumber()-1);
+        //нда(
+
         PrintWriter out = resp.getWriter();
 
         if(user.getLikeNumber() <= 0){
@@ -98,15 +104,5 @@ public class UserServlet extends HttpServlet {
             out.print("/user");
         }
         out.flush();
-    }
-
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPut(req, resp);
-    }
-
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doDelete(req, resp);
     }
 }

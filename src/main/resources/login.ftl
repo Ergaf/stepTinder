@@ -45,7 +45,6 @@
                 console.log(res);
                 if(res.user === name){
                     document.cookie = `sessionId=`+res.sessionId;
-
                     location="/user"
                 } else {
                     alert("incorrect user or pass")

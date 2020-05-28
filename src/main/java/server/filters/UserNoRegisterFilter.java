@@ -29,14 +29,14 @@ public class UserNoRegisterFilter implements Filter {
             for(int i = 0; i < cookies.length; i++){
                 if(cookies[i].getName().equals("sessionId")){
                     for(int o = 0; o < SessionDao.activeHash.size(); o++){
-                        if(SessionDao.activeHash.get(0).getSessionId().equals(cookies[i].getValue())){
-                            logUser = SessionDao.activeHash.get(0).getUser();
+                        if(SessionDao.activeHash.get(o).getSessionId().equals(cookies[i].getValue())){
+                            logUser = SessionDao.activeHash.get(o).getUser();
                         }
                     }
                 }
             }
         }
-
+        //если сессия существует => пропустить к другим сервлетам иначе выдать страницу переадресации на логин
         if(logUser != null){
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
