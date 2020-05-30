@@ -19,7 +19,7 @@
         </excludes>
       </resource>
     </resources>
-    <finalName>MinServer</finalName>
+    <finalName>minserver</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>

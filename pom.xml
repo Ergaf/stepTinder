@@ -13,7 +13,7 @@
     </properties>
 
     <build>
-        <finalName>MinServer</finalName>
+        <finalName>minserver</finalName>
 
         <resources>
             <resource>
