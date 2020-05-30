@@ -22,7 +22,7 @@
         <a class="btn btn-lg btn-light" style="float: right" href="/liked">Liked</a>
     </div>
     <div class="card">
-        <div class="card-body">
+        <div class="card-body" style="margin-left: auto;">
             <div class="row">
                 <div class="col-12 col-lg-12 col-md-12 text-center">
                     <img src="${profiles.photo}" alt="" class="mx-auto rounded-circle img-fluid">
